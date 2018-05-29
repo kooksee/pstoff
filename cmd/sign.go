@@ -47,6 +47,8 @@ func SignCmd() cli.Command {
 					panic(err.Error())
 				}
 
+				logger.Info("info","data",string(tt1))
+
 				var tx1 *types.Transaction
 				if tx.IsCreateContract {
 					tx1 = types.NewContractCreation(

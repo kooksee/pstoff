@@ -2,29 +2,27 @@ package cmd
 
 import (
 	"github.com/urfave/cli"
-	"context"
-	"time"
 	"io/ioutil"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/common"
 	"fmt"
 	"encoding/json"
+	"strings"
+	"github.com/kooksee/pstoff/contracts"
+	"github.com/ethereum/go-ethereum/common"
 )
 
-func TxCmd() cli.Command {
+func PackCmd() cli.Command {
 	return cli.Command{
-		Name:    "sentTx",
-		Aliases: []string{"st"},
-		Usage:   "sent tx to chain",
+		Name:    "pack",
+		Aliases: []string{"pk"},
+		Usage:   "pack method",
 		Flags: []cli.Flag{
 			inputFileFlag(),
 		},
 		Action: func(c *cli.Context) error {
-			cfg.InitEthClient()
+			contracts.Init()
 
 			logger.Info("input file", "file", cfg.IFile)
 
-			client := cfg.GetEthClient()
 			d, err := ioutil.ReadFile(cfg.IFile)
 			if err != nil {
 				panic(err.Error())
@@ -37,26 +35,25 @@ func TxCmd() cli.Command {
 
 			oFile := make([]string, 0)
 			for _, t := range ds {
-				tx := &types.Transaction{}
-				tt1 := common.FromHex(t)
-				if tt1 == nil {
-					logger.Error("hex string error")
-					panic("")
-				}
+				das := strings.Split(t, ",")
+				contactName := das[0]
 
-				if err := tx.UnmarshalJSON(common.FromHex(t)); err != nil {
-					logger.Error("decode tx error", "err", err)
+				logger.Info("contract name","name",contactName)
+				logger.Info("pack data","data",t)
+				ct := contracts.GetContract(contactName)
+
+				var adds []interface{}
+				for _, i := range das[1:] {
+					adds = append(adds, common.HexToAddress(i))
+				}
+				
+				dd, err := ct.ABI.Pack("", adds...)
+				if err != nil {
 					panic(err.Error())
 				}
 
-				ctx2, _ := context.WithTimeout(context.Background(), time.Minute)
-				if err := client.SendTransaction(ctx2, tx); err != nil {
-					logger.Error("SendTransaction  error", "err", err)
-					panic(err.Error())
-				}
-
-				oFile = append(oFile, tx.Hash().String())
-				logger.Info("SendTransaction", "hash", tx.Hash().String())
+				dd = append(ct.Btc, dd...)
+				oFile = append(oFile, common.ToHex(dd))
 			}
 
 			d1, err := json.Marshal(oFile)

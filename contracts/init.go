@@ -11,7 +11,6 @@ var logger log15.Logger
 
 func Init() {
 	cfg = config.GetCfg()
-	cfg.InitEthClient()
 	logger = config.Log().New("package", "contracts")
 	if err := initContracts(); err != nil {
 		panic(fmt.Sprintf("初始化合约错误\n%s", err.Error()))

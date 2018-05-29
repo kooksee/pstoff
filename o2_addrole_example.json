@@ -1,0 +1,5 @@
+[
+  "UserTokenLock,addRole,User,Locker",
+  "UserTokenLock,addRole,User,Unlocker",
+  "NodeList,addRole,Node,NodeListOperator"
+]

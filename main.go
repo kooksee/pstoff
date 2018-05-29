@@ -7,12 +7,10 @@ import (
 
 func main() {
 	cfg := config.NewCfg("kdata")
-	cfg.LoadConfig()
 	cfg.InitLog()
+	cfg.LoadConfig()
 	cfg.InitNode()
 
 	cmd.Init()
 	cmd.RunCmd()
-
-	cfg.Dumps()
 }

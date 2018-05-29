@@ -17,25 +17,34 @@ var once1 sync.Once
 
 func (c *Config) GetNonce() uint64 {
 	once1.Do(func() {
+
+		nonce := uint64(0)
+		var err error
+
 		ctx, _ := context.WithTimeout(context.Background(), time.Minute)
-		//nonce, err := c.GetEthClient().NonceAt(ctx, c.GetNodeAccount().Address, nil)
 		pon := os.Getenv("PON")
 
 		c.l.Info("primas onwer", "pon", pon)
 
-		nonce := uint64(0)
-		var err error
 		if pon == "o1" {
-			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("cd593e2fabd6ff935ba2d44070e599fce242ca09"), nil)
+			//nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("cd593e2fabd6ff935ba2d44070e599fce242ca09"), nil)
+			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("ef924f46ff4d6315867f1580a15a9617ea68463f"), nil)
 		}
 
 		if pon == "o2" {
-			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("66ff46896da45915993fe9a785defe5c49144963"), nil)
+			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("93ee3eef1c32c63aefc15c36d468e5770f358d39"), nil)
+			//nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("66ff46896da45915993fe9a785defe5c49144963"), nil)
 		}
 
 		if pon == "o3" {
-			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("8f930297bcd24d9567afb9ad8631411145711a58"), nil)
+			//nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("8f930297bcd24d9567afb9ad8631411145711a58"), nil)
+			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("87d234c23dc04efc56153fb7cd58053560be04b2"), nil)
 		}
+
+		if pon != "o1" && pon != "o2" && pon != "o3" {
+			nonce, err = c.GetEthClient().NonceAt(ctx, c.GetNodeAccount().Address, nil)
+		}
+
 		if err != nil {
 			panic(err.Error())
 		}
@@ -45,12 +54,10 @@ func (c *Config) GetNonce() uint64 {
 	})
 
 	if c.isNonce {
-		Log().Info("nonce", "nonce", c.Nonce,"isnonce",c.isNonce)
+		Log().Info("nonce", "nonce", c.Nonce, "isnonce", c.isNonce)
 		c.isNonce = false
 		return c.Nonce
 	}
-
-
 
 	c.Nonce += 1
 	Log().Info("nonce", "nonce", c.Nonce)

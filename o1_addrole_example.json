@@ -1,0 +1,9 @@
+[
+  "Token,addRole,NodeAddress1,InflationOperator",
+  "Token,addRole,User,Locker",
+  "Token,addRole,Node,Locker",
+  "Token,addRole,User,Unlocker",
+  "Token,addRole,Node,Unlocker",
+  "Token,addRole,User,IncentivesCollector",
+  "Token,addRole,NodeAddress1,IncentivesDistributor"
+]

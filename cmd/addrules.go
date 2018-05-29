@@ -20,6 +20,7 @@ func AddruleCmd() cli.Command {
 			outputFileFlag(),
 		},
 		Action: func(c *cli.Context) error {
+			cfg.InitEthClient()
 			contracts.Init()
 
 			logger.Info("input file", "file", cfg.IFile)
@@ -45,11 +46,11 @@ func AddruleCmd() cli.Command {
 				}
 
 				contratName := das[0]
-				//contratMth := das[1]
+				contratMth := das[1]
 				userAddress := das[2]
 				roleType := das[3]
 
-				oFile = append(oFile, common.ToHex(contracts.GetContract(contratName).AddRule(userAddress, roleType)))
+				oFile = append(oFile, common.ToHex(contracts.GetContract(contratName).AddRule(contratMth, userAddress, roleType)))
 			}
 
 			d1, err := json.Marshal(oFile)

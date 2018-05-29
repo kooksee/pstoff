@@ -1,0 +1,9 @@
+[
+  "Token,addRole,4c8775fc94c6dd8089fe6f67d57db88a7de6bcff,InflationOperator",
+  "Token,addRole,0x55008381B7bF2Bf08Ce74aa6E529d2e35470BaD4,Locker",
+  "Token,addRole,0xB06D5eD0D09Cbe13412f224D37eeF85B535edABf,Locker",
+  "Token,addRole,0x55008381B7bF2Bf08Ce74aa6E529d2e35470BaD4,Unlocker",
+  "Token,addRole,0xB06D5eD0D09Cbe13412f224D37eeF85B535edABf,Unlocker",
+  "Token,addRole,0x55008381B7bF2Bf08Ce74aa6E529d2e35470BaD4,IncentivesCollector",
+  "Token,addRole,4c8775fc94c6dd8089fe6f67d57db88a7de6bcff,IncentivesDistributor"
+]

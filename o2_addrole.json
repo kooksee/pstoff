@@ -1,0 +1,5 @@
+[
+  "UserTokenLock,addRole,0x55008381B7bF2Bf08Ce74aa6E529d2e35470BaD4,Locker",
+  "UserTokenLock,addRole,0x55008381B7bF2Bf08Ce74aa6E529d2e35470BaD4,Unlocker",
+  "NodeList,addRole,0xB06D5eD0D09Cbe13412f224D37eeF85B535edABf,NodeListOperator"
+]

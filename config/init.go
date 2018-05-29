@@ -22,6 +22,7 @@ type Contract struct {
 	Name    string `yaml:"name"`
 	Address string `yaml:"address"`
 	Abi     string `yaml:"abi"`
+	Byc     string `yaml:"byc"`
 }
 type Config struct {
 	isNonce      bool
@@ -50,6 +51,8 @@ type Config struct {
 }
 
 func (c *Config) LoadConfig() {
+	c.l.Info("cfgFile", "file", c.cfgFile)
+
 	d, err := ioutil.ReadFile(c.cfgFile)
 	if err != nil {
 		panic(fmt.Sprintf("配置文件读取错误\n%s", err.Error()))
