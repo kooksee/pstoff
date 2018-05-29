@@ -4,6 +4,7 @@ import (
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"github.com/ethereum/go-ethereum/core/types"
+	kts "github.com/kooksee/pstoff/types"
 	"github.com/ethereum/go-ethereum/common"
 	"fmt"
 	"encoding/json"
@@ -34,19 +35,39 @@ func SignCmd() cli.Command {
 
 			oFile := make([]string, 0)
 			for _, t := range ds {
-				tx := &types.Transaction{}
+				tx := &kts.Tx{}
 				tt1 := common.FromHex(t)
 				if tt1 == nil {
 					logger.Error("hex string error")
 					panic("")
 				}
 
-				if err := tx.UnmarshalJSON(common.FromHex(t)); err != nil {
+				if err := tx.Decode(common.FromHex(t)); err != nil {
 					logger.Error("decode tx error", "err", err)
 					panic(err.Error())
 				}
 
-				signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, big.NewInt(int64(cfg.ChainId)))
+				var tx1 *types.Transaction
+				if tx.IsCreateContract {
+					tx1 = types.NewContractCreation(
+						tx.Nonce,
+						big.NewInt(tx.Amount),
+						big.NewInt(tx.GasLimit),
+						big.NewInt(tx.GasPrice),
+						tx.Data,
+					)
+				} else {
+					tx1 = types.NewTransaction(
+						tx.Nonce,
+						common.HexToAddress(tx.To),
+						big.NewInt(tx.Amount),
+						big.NewInt(tx.GasLimit),
+						big.NewInt(tx.GasPrice),
+						tx.Data,
+					)
+				}
+
+				signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx1, big.NewInt(int64(cfg.ChainId)))
 				if err != nil {
 					logger.Error("SignTx error", "err", err)
 					panic(err.Error())

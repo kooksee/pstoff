@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	kts "github.com/kooksee/pstoff/types"
 )
 
 type Contract struct {
@@ -79,37 +80,29 @@ func (contract *Contract) AddRule(userAddress, roleType string) []byte {
 		panic(err.Error())
 	}
 
-	tx := types.NewTransaction(
-		cfg.GetNonce(),
-		contract.Address,
-		big.NewInt(0),
-		big.NewInt(int64(cfg.GasLimit)),
-		big.NewInt(int64(cfg.Gasprice)),
-		methodBytes,
-	)
-
-	tx1, err := tx.MarshalJSON()
-	if err != nil {
-		panic(err.Error())
+	tx := &kts.Tx{
+		Nonce:    cfg.GetNonce(),
+		To:       contract.Address.Hex(),
+		Amount:   0,
+		GasLimit: int64(cfg.GasLimit),
+		GasPrice: int64(cfg.Gasprice),
+		Data:     methodBytes,
 	}
 
-	return tx1
+	return tx.Encode()
 }
 
 func Deploy(data []byte) []byte {
 
-	tx := types.NewContractCreation(
-		cfg.GetNonce(),
-		big.NewInt(0),
-		big.NewInt(int64(cfg.GasLimit)),
-		big.NewInt(int64(cfg.Gasprice)),
-		data,
-	)
-
-	tx1, err := tx.MarshalJSON()
-	if err != nil {
-		panic(err.Error())
+	tx := &kts.Tx{
+		IsCreateContract: true,
+		Nonce:            cfg.GetNonce(),
+		To:               "",
+		Amount:           0,
+		GasLimit:         int64(cfg.GasLimit),
+		GasPrice:         int64(cfg.Gasprice),
+		Data:             data,
 	}
 
-	return tx1
+	return tx.Encode()
 }

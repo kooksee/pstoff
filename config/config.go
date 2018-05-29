@@ -10,6 +10,7 @@ import (
 	"time"
 	"context"
 	"sync"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 var once1 sync.Once
@@ -17,20 +18,39 @@ var once1 sync.Once
 func (c *Config) GetNonce() uint64 {
 	once1.Do(func() {
 		ctx, _ := context.WithTimeout(context.Background(), time.Minute)
-		nonce, err := c.GetEthClient().NonceAt(ctx, c.GetNodeAccount().Address, nil)
+		//nonce, err := c.GetEthClient().NonceAt(ctx, c.GetNodeAccount().Address, nil)
+		pon := os.Getenv("PON")
+
+		c.l.Info("primas onwer", "pon", pon)
+
+		nonce := uint64(0)
+		var err error
+		if pon == "o1" {
+			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("cd593e2fabd6ff935ba2d44070e599fce242ca09"), nil)
+		}
+
+		if pon == "o2" {
+			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("66ff46896da45915993fe9a785defe5c49144963"), nil)
+		}
+
+		if pon == "o3" {
+			nonce, err = c.GetEthClient().NonceAt(ctx, common.HexToAddress("8f930297bcd24d9567afb9ad8631411145711a58"), nil)
+		}
 		if err != nil {
 			panic(err.Error())
 		}
+
 		c.Nonce = nonce
 		c.isNonce = true
 	})
 
 	if c.isNonce {
-		Log().Info("nonce", "nonce", c.Nonce)
+		Log().Info("nonce", "nonce", c.Nonce,"isnonce",c.isNonce)
+		c.isNonce = false
 		return c.Nonce
 	}
 
-	c.isNonce = false
+
 
 	c.Nonce += 1
 	Log().Info("nonce", "nonce", c.Nonce)

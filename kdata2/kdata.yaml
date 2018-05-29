@@ -1,12 +1,12 @@
-eth_addr: https://node.ropsten.tokenup.io
+eth_addr: https://node.foundation.tokenup.io/
 log_path: kdata/log
 log_level: debug
-nonce: 2
+nonce: 0
 keystore: kdata/keystore
-passphrase: 'Test123:::'
+passphrase: '123456'
 gas_limit: 4000000
 gas_price: 100000000000
-chain_id: 3
+chain_id: 1
 contracts:
 - name: metadata
   address: 0x500f6bf4d6416891dae54bba8f8c049ede665954
@@ -22,21 +22,7 @@ contracts:
   abi: '[{"constant":false,"inputs":[{"name":"icon","type":"string"},{"name":"signature","type":"bytes"},{"name":"user","type":"address"}],"name":"updateUserIcon","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"timestamp","type":"string"},{"name":"signature","type":"bytes"},{"name":"user","type":"address"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"name","type":"string"},{"name":"signature","type":"bytes"},{"name":"user","type":"address"}],"name":"updateUserName","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"tokenAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"userAddress","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"UserTokenBurnLog","type":"event"}]'
 - name: token
   address: 0x04d2024dac72a41879250b6c07ecc7e84b27705e
-  abi: '[{"constant": true,"inputs": [{"name": "addr","type": "address"},{"name":
-    "roleName","type": "string"}],"name": "checkRole","outputs": [],"payable": false,"stateMutability":
-    "view","type": "function"},{"constant": false,"inputs": [{"name": "addr","type":
-    "address"},{"name": "roleName","type": "string"}],"name": "removeRole","outputs":
-    [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant":
-    true,"inputs": [{"name": "addr","type": "address"},{"name": "roleName","type":
-    "string"}],"name": "hasRole","outputs": [{"name": "","type": "bool"}],"payable":
-    false,"stateMutability": "view","type": "function"},{"constant": false,"inputs":
-    [{"name": "addr","type": "address"},{"name": "roleName","type": "string"}],"name":
-    "addRole","outputs": [],"payable": false,"stateMutability": "nonpayable","type":
-    "function"},{"anonymous": false,"inputs": [{"indexed": false,"name": "addr","type":
-    "address"},{"indexed": false,"name": "roleName","type": "string"}],"name": "RoleAdded","type":
-    "event"},{"anonymous": false,"inputs": [{"indexed": false,"name": "addr","type":
-    "address"},{"indexed": false,"name": "roleName","type": "string"}],"name": "RoleRemoved","type":
-    "event"}]'
+  abi: '[{"constant": true,"inputs": [{"name": "addr","type": "address"},{"name": "roleName","type": "string"}],"name": "checkRole","outputs": [],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "addr","type": "address"},{"name": "roleName","type": "string"}],"name": "removeRole","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"constant": true,"inputs": [{"name": "addr","type": "address"},{"name": "roleName","type": "string"}],"name": "hasRole","outputs": [{"name": "","type": "bool"}],"payable": false,"stateMutability": "view","type": "function"},{"constant": false,"inputs": [{"name": "addr","type": "address"},{"name": "roleName","type": "string"}],"name": "addRole","outputs": [],"payable": false,"stateMutability": "nonpayable","type": "function"},{"anonymous": false,"inputs": [{"indexed": false,"name": "addr","type": "address"},{"indexed": false,"name": "roleName","type": "string"}],"name": "RoleAdded","type": "event"},{"anonymous": false,"inputs": [{"indexed": false,"name": "addr","type": "address"},{"indexed": false,"name": "roleName","type": "string"}],"name": "RoleRemoved","type": "event"}]'
 - name: incentives
   address: 0x7b517118468ed4e5f38ac51203ca6a033f30d9fc
   abi: '[{"constant":false,"inputs":[{"name":"recipients","type":"address[]"},{"name":"amounts","type":"uint256[]"}],"name":"grantIncentives","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_nodeAddress","type":"address"}],"name":"updateNode","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"tokenAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]'
