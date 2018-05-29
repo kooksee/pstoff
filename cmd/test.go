@@ -3,13 +3,10 @@ package cmd
 import (
 	"github.com/urfave/cli"
 	"github.com/ethereum/go-ethereum/core/types"
-	"time"
-	"context"
 	"strings"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"math/big"
 	"github.com/ethereum/go-ethereum/common"
-	"encoding/json"
 )
 
 const abiStr = `[
@@ -63,26 +60,8 @@ func TestCmd() cli.Command {
 				panic(err.Error())
 			}
 
-			ctx, _ := context.WithTimeout(context.Background(), time.Minute)
-			nonce, err := cfg.GetEthClient().NonceAt(ctx, cfg.GetNodeAccount().Address, nil)
-			if err != nil {
-				panic(err.Error())
-			}
-
-			currentNonce := uint64(cfg.GetNonce())
-
-			logger.Error("currentNonce", currentNonce)
-
-			if nonce > currentNonce || currentNonce == 0 {
-				currentNonce = nonce
-			} else {
-				currentNonce = currentNonce + 1
-			}
-
-			logger.Error("nonce", nonce)
-
 			tx := types.NewTransaction(
-				currentNonce,
+				cfg.GetNonce(),
 				common.HexToAddress(contractAddr),
 				big.NewInt(0),
 				big.NewInt(int64(cfg.GasLimit)),

@@ -7,9 +7,33 @@ import (
 	log "github.com/inconshreveable/log15"
 	"path"
 	"github.com/kooksee/pstoff/cmn"
+	"time"
+	"context"
+	"sync"
 )
 
-func (c *Config) GetNonce() int {
+var once1 sync.Once
+
+func (c *Config) GetNonce() uint64 {
+	once1.Do(func() {
+		ctx, _ := context.WithTimeout(context.Background(), time.Minute)
+		nonce, err := c.GetEthClient().NonceAt(ctx, c.GetNodeAccount().Address, nil)
+		if err != nil {
+			panic(err.Error())
+		}
+		c.Nonce = nonce
+		c.isNonce = true
+	})
+
+	if c.isNonce {
+		Log().Info("nonce", "nonce", c.Nonce)
+		return c.Nonce
+	}
+
+	c.isNonce = false
+
+	c.Nonce += 1
+	Log().Info("nonce", "nonce", c.Nonce)
 	return c.Nonce
 }
 

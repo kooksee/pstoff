@@ -52,7 +52,7 @@ func (contract *Contract) Execute(method string, args ...interface{}) []byte {
 	}
 
 	tx := types.NewTransaction(
-		uint64(cfg.GetNonce()),
+		cfg.GetNonce(),
 		contract.Address,
 		big.NewInt(0),
 		big.NewInt(int64(cfg.GasLimit)),
@@ -73,17 +73,51 @@ func (contract *Contract) Execute(method string, args ...interface{}) []byte {
 	return tx1
 }
 
-func Deploy(data []byte) ([]byte) {
+func (contract *Contract) AddRule(userAddress, roleType string) []byte {
+	methodBytes, err := contract.ABI.Pack(
+		"addRole",
+		common.StringToAddress(userAddress),
+		roleType,
+	)
+	if err != nil {
+		logger.Error("AddRule error", "err", err)
+		panic(err.Error())
+	}
+
+	tx := types.NewTransaction(
+		cfg.GetNonce(),
+		contract.Address,
+		big.NewInt(0),
+		big.NewInt(int64(cfg.GasLimit)),
+		big.NewInt(int64(cfg.Gasprice)),
+		methodBytes,
+	)
+
+	signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, big.NewInt(int64(cfg.ChainId)))
+	if err != nil {
+		logger.Error("SignTx error", "err", err)
+		panic(err.Error())
+	}
+
+	tx1, err := signedTx.MarshalJSON()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return tx1
+}
+
+func Deploy(data []byte) []byte {
 
 	tx := types.NewContractCreation(
-		uint64(cfg.GetNonce()),
+		cfg.GetNonce(),
 		big.NewInt(0),
 		big.NewInt(int64(cfg.GasLimit)),
 		big.NewInt(int64(cfg.Gasprice)),
 		data,
 	)
 
-	signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, nil)
+	signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, big.NewInt(int64(cfg.ChainId)))
 	if err != nil {
 		panic(err.Error())
 	}

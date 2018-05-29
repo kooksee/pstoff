@@ -16,6 +16,4 @@ func main() {
 
 	cmd.Init()
 	cmd.RunCmd()
-
-	cfg.Dumps()
 }

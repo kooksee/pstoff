@@ -5,8 +5,7 @@ import (
 	"io/ioutil"
 	"fmt"
 	"github.com/kooksee/pstoff/contracts"
-	"quorum/common"
-	"encoding/json"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 func DeployCmd() cli.Command {
@@ -16,23 +15,29 @@ func DeployCmd() cli.Command {
 		Usage:   "deploy contract",
 		Flags: []cli.Flag{
 			inputFileFlag(),
-			outputFileFlag(),
+			//outputFileFlag(),
 		},
 		Action: func(c *cli.Context) error {
 
 			d, err := ioutil.ReadFile(cfg.IFile)
 			if err != nil {
+				logger.Error("读文件失败", "err", err)
 				panic(err.Error())
 			}
 
 			iFile := make([]string, 0)
 			if err := json.Unmarshal(d, &iFile); err != nil {
+				logger.Error("[]string json数据decode失败", "err", err)
 				panic(err.Error())
 			}
 
 			oFile := make([]string, 0)
 			for _, ifile := range iFile {
 				d1 := common.FromHex(ifile)
+				if d1 == nil {
+					logger.Error("hex string decode error", "str", ifile)
+					panic("")
+				}
 				oFile = append(oFile, common.ToHex(contracts.Deploy(d1)))
 			}
 
@@ -40,6 +45,11 @@ func DeployCmd() cli.Command {
 			if err != nil {
 				panic(err.Error())
 			}
+
+			cfg.OFile = cfg.IFile + fmt.Sprintf(".output.%d.json", cfg.Nonce)
+
+			logger.Info("output file", "file", cfg.OFile)
+
 			if err := ioutil.WriteFile(cfg.OFile, d1, 0755); err != nil {
 				panic(fmt.Sprintf("写入失败\n%s", err.Error()))
 			}

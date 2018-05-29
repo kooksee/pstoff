@@ -24,6 +24,7 @@ type Contract struct {
 	Abi     string `yaml:"abi"`
 }
 type Config struct {
+	isNonce      bool
 	ethClient    *ethclient.Client
 	l            log.Logger
 	cfgFile      string
@@ -39,7 +40,7 @@ type Config struct {
 	EthAddr     string     `yaml:"eth_addr"`
 	LogPath     string     `yaml:"log_path"`
 	LogLevel    string     `yaml:"log_level"`
-	Nonce       int        `yaml:"nonce"`
+	Nonce       uint64     `yaml:"nonce"`
 	KeystoreDir string     `yaml:"keystore"`
 	Passphrase  string     `yaml:"passphrase"`
 	GasLimit    int        `yaml:"gas_limit"`
