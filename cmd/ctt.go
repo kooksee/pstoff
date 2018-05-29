@@ -7,6 +7,7 @@ import (
 	"strings"
 	"encoding/hex"
 	"github.com/kooksee/pstoff/contracts"
+	"encoding/json"
 )
 
 func CTTCmd() cli.Command {

@@ -8,6 +8,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/common"
 	"fmt"
+	"encoding/json"
 )
 
 func TxCmd() cli.Command {

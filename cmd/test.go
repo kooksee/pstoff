@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"math/big"
 	"github.com/ethereum/go-ethereum/common"
+	"encoding/json"
 )
 
 const abiStr = `[

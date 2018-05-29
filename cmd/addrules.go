@@ -7,6 +7,7 @@ import (
 	"github.com/kooksee/pstoff/contracts"
 	"github.com/ethereum/go-ethereum/common"
 	"strings"
+	"encoding/json"
 )
 
 func AddruleCmd() cli.Command {

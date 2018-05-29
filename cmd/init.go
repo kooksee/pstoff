@@ -4,11 +4,9 @@ import (
 	"github.com/inconshreveable/log15"
 	"github.com/kooksee/pstoff/config"
 	"github.com/urfave/cli"
-	"github.com/json-iterator/go"
 )
 
 var (
-	json   = jsoniter.ConfigCompatibleWithStandardLibrary
 	logger log15.Logger
 	cfg    *config.Config
 )

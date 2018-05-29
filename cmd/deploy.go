@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/kooksee/pstoff/contracts"
 	"github.com/ethereum/go-ethereum/common"
+	"encoding/json"
 )
 
 func DeployCmd() cli.Command {
