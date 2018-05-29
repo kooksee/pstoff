@@ -20,6 +20,8 @@ func AddruleCmd() cli.Command {
 			outputFileFlag(),
 		},
 		Action: func(c *cli.Context) error {
+			contracts.Init()
+
 			logger.Info("input file", "file", cfg.IFile)
 
 			d, err := ioutil.ReadFile(cfg.IFile)

@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"github.com/urfave/cli"
-	"context"
-	"time"
 	"io/ioutil"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/common"
@@ -12,20 +10,18 @@ import (
 	"math/big"
 )
 
-func TxCmd() cli.Command {
+func SignCmd() cli.Command {
 	return cli.Command{
-		Name:    "sentTx",
-		Aliases: []string{"st"},
-		Usage:   "sent tx to chain",
+		Name:    "sign",
+		Aliases: []string{"sn"},
+		Usage:   "sign tx",
 		Flags: []cli.Flag{
 			inputFileFlag(),
 		},
 		Action: func(c *cli.Context) error {
-			cfg.InitEthClient()
 
 			logger.Info("input file", "file", cfg.IFile)
 
-			client := cfg.GetEthClient()
 			d, err := ioutil.ReadFile(cfg.IFile)
 			if err != nil {
 				panic(err.Error())
@@ -56,14 +52,12 @@ func TxCmd() cli.Command {
 					panic(err.Error())
 				}
 
-				ctx2, _ := context.WithTimeout(context.Background(), time.Minute)
-				if err := client.SendTransaction(ctx2, signedTx); err != nil {
-					logger.Error("SendTransaction  error", "err", err)
+				ddd, err := signedTx.MarshalJSON()
+				if err != nil {
 					panic(err.Error())
 				}
 
-				oFile = append(oFile, signedTx.Hash().String())
-				logger.Info("SendTransaction", "hash", signedTx.Hash().String())
+				oFile = append(oFile, common.ToHex(ddd))
 			}
 
 			d1, err := json.Marshal(oFile)

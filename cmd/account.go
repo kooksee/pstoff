@@ -14,6 +14,7 @@ func AccountCmd() cli.Command {
 			passwdFlag(),
 		},
 		Action: func(c *cli.Context) error {
+
 			if cfg.PassWD == "" {
 				logger.Error("请输入传入密码参数")
 				panic("请输入传入密码参数")

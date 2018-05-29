@@ -60,12 +60,7 @@ func (contract *Contract) Execute(method string, args ...interface{}) []byte {
 		methodBytes,
 	)
 
-	signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, big.NewInt(int64(cfg.ChainId)))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	tx1, err := signedTx.MarshalJSON()
+	tx1, err := tx.MarshalJSON()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -93,13 +88,7 @@ func (contract *Contract) AddRule(userAddress, roleType string) []byte {
 		methodBytes,
 	)
 
-	signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, big.NewInt(int64(cfg.ChainId)))
-	if err != nil {
-		logger.Error("SignTx error", "err", err)
-		panic(err.Error())
-	}
-
-	tx1, err := signedTx.MarshalJSON()
+	tx1, err := tx.MarshalJSON()
 	if err != nil {
 		panic(err.Error())
 	}
@@ -117,12 +106,7 @@ func Deploy(data []byte) []byte {
 		data,
 	)
 
-	signedTx, err := cfg.GetNodeKeyStore().SignTx(*cfg.GetNodeAccount(), tx, big.NewInt(int64(cfg.ChainId)))
-	if err != nil {
-		panic(err.Error())
-	}
-
-	tx1, err := signedTx.MarshalJSON()
+	tx1, err := tx.MarshalJSON()
 	if err != nil {
 		panic(err.Error())
 	}

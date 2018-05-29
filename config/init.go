@@ -76,18 +76,17 @@ func (c *Config) Dumps() {
 }
 
 func (c *Config) InitNode() {
-	nodeKeystore := keystore.NewKeyStore(c.KeystoreDir, keystore.LightScryptN, keystore.LightScryptP)
-	if len(nodeKeystore.Accounts()) == 0 {
-		panic("node account not found")
+	c.nodeKeystore = keystore.NewKeyStore(c.KeystoreDir, keystore.LightScryptN, keystore.LightScryptP)
+
+	if len(c.nodeKeystore.Accounts()) == 0 {
+		c.l.Warn("node account not found")
+		return
 	}
 
-	nodeAccount := &nodeKeystore.Accounts()[0]
-	if err := nodeKeystore.Unlock(*nodeAccount, c.Passphrase); err != nil {
+	c.nodeAccount = &c.nodeKeystore.Accounts()[0]
+	if err := c.nodeKeystore.Unlock(*c.nodeAccount, c.Passphrase); err != nil {
 		panic(fmt.Sprintf("%s\n%s", "账号解锁失败", err.Error()))
 	}
-
-	c.nodeKeystore = nodeKeystore
-	c.nodeAccount = nodeAccount
 }
 
 func (t *Config) InitLog() {

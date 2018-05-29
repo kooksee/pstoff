@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/kooksee/pstoff/config"
 	"github.com/kooksee/pstoff/cmd"
-	"github.com/kooksee/pstoff/contracts"
 )
 
 func main() {
@@ -11,8 +10,6 @@ func main() {
 	cfg.LoadConfig()
 	cfg.InitLog()
 	cfg.InitNode()
-
-	contracts.Init()
 
 	cmd.Init()
 	cmd.RunCmd()

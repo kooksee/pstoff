@@ -19,6 +19,7 @@ func DeployCmd() cli.Command {
 			//outputFileFlag(),
 		},
 		Action: func(c *cli.Context) error {
+			contracts.Init()
 
 			d, err := ioutil.ReadFile(cfg.IFile)
 			if err != nil {
